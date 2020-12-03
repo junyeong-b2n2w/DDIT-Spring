@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+	<!-- p: property / set~~ 등 변수에 값을 넣을때 사용 -->
+	<!-- c: constructor-arg / 생성자 생성시에 들어가는것 -->
+
+	<!-- dbpc를 이용해 db connection 생성용 -->
+	<bean id = "dataSource"
+		class="org.apache.commons.dbcp2.BasicDataSource"
+		p:driverClassName="${jdbc.driverClassName}"
+		p:url="${jdbc.url}"
+		p:username="${jdbc.username}"
+		p:password="${jdbc.password}"
+		/>
+
+	<!-- log4j에서 mybatis 로그를 이쁘게 출력하기 위해서 ?없이 출력하나봄 ,, 다른이유ㅜ가 있었던거 같은데말야-->
+	<bean id ="dataSourceSpied" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+		<constructor-arg ref = "dataSource" />
+		<property name="logFormatter">
+			<bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
+				<property name="loggingType" value="MULTI_LINE" />
+				<property name="sqlPrefix" value="SQL:::"/>
+			</bean>
+		</property>
+	</bean>
+
+	<!-- 트랜잭션 관리를 위한 설정 -->
+	<bean id ="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+		p:dataSource-ref="dataSourceSpied"
+		/>
+	
+	<!-- DB연동작업의 핵심, 연결과 실행의 모든것을 가진 중요한 객체 -->
+	<bean id ="sqlSessionFactory"
+		class="org.mybatis.spring.SqlSessionFactoryBean"
+		p:dataSource-ref="dataSourceSpied"
+		p:configLocation="classpath:kr/or/ddit/mybatis/sqlConfig/sqlConfig.xml"
+		p:mapperLocations="classpath:kr/or/ddit/mybatis/mappers/*-Mapper.xml"
+		/>
+		
+	<!-- sqlSessonFactory를 이용해서 생성되는 sqlSessionTemplate 객체
+		이친구를 이용해서 dao에 주입된다 -->
+	<bean id="sqlSession"
+		class="org.mybatis.spring.SqlSessionTemplate"
+		c:sqlSessionFactory-ref="sqlSessionFactory"
+		/>
+	
+
+</beans>
