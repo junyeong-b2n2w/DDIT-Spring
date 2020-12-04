@@ -10,10 +10,15 @@
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	
 	<!-- Enables the Spring MVC @Controller programming model -->
+	<!--  @Controller 빼내겠다  -->
 	<annotation-driven />
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+	
+	<!-- 여긴 get방식으로만옴 -->
 	<resources mapping="/resources/**" location="/resources/" />
+
+<!-- 	<view-controller path="/common/loginForm.do" view-name="common/loginForm"/> -->
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -21,7 +26,12 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-	<context:component-scan base-package="or.kr.ddit" />
+	<!-- @Component, @Controller , @Service, @Repository (DAO) 에노테이션 붙은 애들을 다 bean 등록한다. -->
+	<!-- 다만 service, dao는 xml로 빈등록 하기때문에 여기선 controller로 빈등록 된다 -->
+	<!-- controller를 xml로 등록하지 않고 에노테이션을 쓰는 이유는 컨트롤러 임을 구분하기 위해서 // bean은 id로만 구분되고 그 목적으로 구분하기 힘들다 -->
+	<!-- 애노테이션의 목적은 자바에서 인덱싱을 하기 위함 // servlet의 @webservlet 오마주  -->
+	<!-- xml에서는 set 메서드가 필수(property가 set메서드에 의해서 reflection되기 때문) , @ 는 set필수 아님 -->
+	<context:component-scan base-package="kr.or.ddit.controller" />
 	
 	
 	

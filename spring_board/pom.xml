@@ -16,6 +16,8 @@
 		<commons.dbcp2-version>2.5.0</commons.dbcp2-version>
 		<org.mybatis-version>3.5.3</org.mybatis-version>
 		<mybatis.spring-version>2.0.3</mybatis.spring-version>
+		<opensymphony.sitemesh-version>2.4.2</opensymphony.sitemesh-version>
+		<jackson.databind-version>2.9.8</jackson.databind-version>
 	</properties>
 	<repositories>
 		<repository>
@@ -80,6 +82,19 @@
 		    <version>${mybatis.spring-version}</version>
 		</dependency>
 				
+		<!-- sitemesh -->
+		<dependency>
+		    <groupId>opensymphony</groupId>
+		    <artifactId>sitemesh</artifactId>
+		    <version>${opensymphony.sitemesh-version}</version>
+		</dependency>
+		
+		<!-- jackson databind -->
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-databind</artifactId>
+		    <version>${jackson.databind-version}</version>
+		</dependency>
 		
 				
 		<!-- AspectJ -->
