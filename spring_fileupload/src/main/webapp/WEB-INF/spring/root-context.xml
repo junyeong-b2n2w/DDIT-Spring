@@ -6,6 +6,6 @@
 	<!-- Root Context: defines shared resources visible to all other web components -->
 		
 	<bean id="uploadPath" class="java.lang.String">
-		<constructor-arg value="Users/junyoung/Desktop"/>
+		<constructor-arg value="/Users/junyoung/Desktop"/>
 	</bean>
 </beans>
