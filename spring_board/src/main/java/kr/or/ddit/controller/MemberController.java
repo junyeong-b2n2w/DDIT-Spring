@@ -38,4 +38,12 @@ public class MemberController {
 		return mnv;
 	}
 	
+	@RequestMapping("/registForm")
+	public String registForm() {
+		String url= "member/regist";
+		return url;
+	}
+	
+	
+	
 }
