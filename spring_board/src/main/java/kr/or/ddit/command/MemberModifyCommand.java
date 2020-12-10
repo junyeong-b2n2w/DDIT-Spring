@@ -5,21 +5,17 @@ import org.springframework.web.multipart.MultipartFile;
 import kr.or.ddit.dto.MemberVO;
 
 public class MemberModifyCommand {
-
-	private String id;
-	private String pwd;
-	private String name;
-	private String email;
-	private String phone;
-	private MultipartFile picture;
-	private String oldPicture;
-	private String uploadPicture;
-	@Override
-	public String toString() {
-		return "MemberModifyCommand [id=" + id + ", pwd=" + pwd + ", name=" + name + ", email=" + email + ", phone="
-				+ phone + ", picture=" + picture + ", oldPicture=" + oldPicture + ", uploadPicture=" + uploadPicture
-				+ "]";
-	}
+	
+	private String id;  //아이디
+	private String pwd; //패스워드
+	private String name; //이름
+	private String phone; //전화번호
+	private String email;  //이메일
+	private MultipartFile picture; // 사진파일 
+	private String oldPicture; // 이전 사진파일명
+	private String uploadPicture; // 변경된 사진 파일명.
+	
+	
 	public String getId() {
 		return id;
 	}
@@ -38,17 +34,17 @@ public class MemberModifyCommand {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
 	public String getPhone() {
 		return phone;
 	}
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	public MultipartFile getPicture() {
 		return picture;
@@ -71,13 +67,16 @@ public class MemberModifyCommand {
 	
 	public MemberVO toParseMember() {
 		MemberVO member = new MemberVO();
-	    member.setId(id);
-	    member.setPwd(pwd);
-	    member.setName(name);
-	    member.setEmail(email);
-	    member.setPhone(phone.replace("-", ""));
-	    
-	    return member;
+		member.setId(this.id);
+		member.setPwd(this.pwd);
+		member.setName(this.name);
+		member.setPhone(this.phone.replace("-", ""));
+		member.setEmail(this.email);
+			
+		return member;
 	}
 	
 }
+
+
+

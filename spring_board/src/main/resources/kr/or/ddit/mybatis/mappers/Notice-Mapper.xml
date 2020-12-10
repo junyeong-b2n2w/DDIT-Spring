@@ -51,7 +51,7 @@
 		from notice
 		where nno is not null
 		<include refid="search" />
-		order by regDate desc
+		order by nno desc
 	</select>
 	<select id="selectSearchNoticeListCount" resultType="int">
 		select
@@ -59,7 +59,7 @@
 		from notice
 		where nno is not null
 		<include refid="search" />
-		order by regDate desc
+		order by nno desc
 		
 	</select>
 	

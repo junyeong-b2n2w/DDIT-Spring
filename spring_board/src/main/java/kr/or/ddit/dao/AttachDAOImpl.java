@@ -23,6 +23,7 @@ public class AttachDAOImpl implements AttachDAO{
 	@Override
 	public void deleteAttach(int ano) throws SQLException {
 		sqlSession.update("Attach-Mapper.deleteAttach",ano);		
+		
 	}
 
 	@Override
@@ -38,6 +39,7 @@ public class AttachDAOImpl implements AttachDAO{
 	}
 	@Override
 	public AttachVO selectAttachByAno(int ano) throws SQLException {
+		
 		AttachVO attach=
 				sqlSession.selectOne("Attach-Mapper.selectAttachByAno",ano);
 		

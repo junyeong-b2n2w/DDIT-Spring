@@ -7,6 +7,8 @@
 window.onload=function(){
 	var formObj = $("form[role='form']");
 
+	ShowReply();
+	
 	$('button#modifyBtn').on('click',function(evnet){
 		//alert('modify btn click');
 		formObj.attr({

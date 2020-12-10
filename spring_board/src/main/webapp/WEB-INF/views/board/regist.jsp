@@ -54,6 +54,10 @@
   </div>
   <!-- /.content-wrapper -->
 <script>
+window.onload=function(){
+	
+	SmartEditor_summernote($('#content'));
+	
 	$('#registBtn').on('click',function(e){
 		//alert("regist click");
 		var form=document.registForm;
@@ -76,7 +80,7 @@
 		window.opener.location.href='list.do';
 		window.close();
 	});
-	
+}
 </script>
 
 <%@ include file="/WEB-INF/views/common/summernote.jsp" %>

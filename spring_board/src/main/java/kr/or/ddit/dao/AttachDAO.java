@@ -16,3 +16,9 @@ public interface AttachDAO {
 
 	public void deleteAllAttach(int pno)throws SQLException;
 }
+
+
+
+
+
+

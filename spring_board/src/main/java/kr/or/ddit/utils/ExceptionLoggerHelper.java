@@ -13,30 +13,31 @@ import javax.servlet.http.HttpServletRequest;
 import kr.or.ddit.dto.MemberVO;
 
 public class ExceptionLoggerHelper {
-
-	public static void write(HttpServletRequest request, Exception e, Object res){
-		String savePath = GetUploadPath.getUploadPath("error.log").replace("/", File.separator);;
+	
+	public static void write(HttpServletRequest request,Exception e,Object res){
 		
-		String url = request.getRequestURI().replace(request.getContextPath(), "");
+		String savePath = GetUploadPath.getUploadPath("error.log").replace("/", File.separator);
 		
+		String url=request.getRequestURI().replace(request.getContextPath(), "");
 		String date = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date());
-		String logUserName = ((MemberVO)request.getSession().getAttribute("loginUser")).getName();
+		String loginUserName = ((MemberVO)request.getSession().getAttribute("loginUser")).getName();
 		String exceptionType = e.getClass().getName();
-		String happenObject = res.getClass().getName();
+		String happenObject =  res.getClass().getName();
 		
-		String log = "[Error : " + exceptionType +  " ] " +url + date + ","+logUserName+","+happenObject +"\n"+ e.getMessage();
+		String log="[Error : "+exceptionType +"]"+url+","+date+","+loginUserName+","+happenObject
+				   +"\n"+e.getMessage();
 		
 		//로그 파일 생성.
-		File file = new File(savePath);
-		if(!file.exists()) {
+		
+		File file=new File(savePath);
+		if(!file.exists()){
 			file.mkdirs();
 		}
-		
 		try {
-			String logFilePath = savePath + File.separator + "system_exception_log.txt";
-			BufferedWriter out = new BufferedWriter(new FileWriter(logFilePath,true));
+			String logFilePath=savePath+File.separator+"system_exception_log.txt";		
+			BufferedWriter out=new BufferedWriter(new FileWriter(logFilePath,true));
 			
-			//로그 기록
+			//로그를 기록
 			out.write(log);
 			out.newLine();
 			
@@ -45,6 +46,14 @@ public class ExceptionLoggerHelper {
 			exception.printStackTrace();
 		}
 		
+		
 	}
-	
 }
+
+
+
+
+
+
+
+

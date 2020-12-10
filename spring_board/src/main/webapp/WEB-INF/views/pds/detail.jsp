@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page trimDirectiveWhitespaces="true" %>
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
@@ -15,7 +16,7 @@
 		<jsp:param value="list.do" name="url"/>    	
     </jsp:include>
 
-    <!-- Main content -->
+     <!-- Main content -->
     <section class="content container-fluid">
 		<div class="row">
 			<div class="col-md-12">
@@ -31,22 +32,23 @@
 						<div class="col-sm-12 row">
 							<div class="form-group col-sm-4" >
 								<label for="writer">작성자</label>
-								<input type="text" class="form-control" id="writer" value="${pds.writer }"readonly />
+								<input type="text" class="form-control" id="writer" value="${pds.writer }" readonly />
 							</div>		
 							
 							<div class="form-group col-sm-4" >
 								<label for="regDate">작성일</label>
-								<input type="text" class="form-control" id="regDate"
-								 value='<fmt:formatDate value="${pds.regDate }" pattern="yyyy-MM-dd" />' readonly />
+								<input type="text" class="form-control" id="regDate" 
+									value="<fmt:formatDate value="${pds.regDate }" pattern="yyyy-MM-dd" />" readonly />
 							</div>	
 							<div class="form-group col-sm-4" >
 								<label for="viewcnt">조회수</label>
-								<input type="text" class="form-control" id="viewcnt" value="${pds.viewcnt }" readonly />
+								<input type="text" class="form-control" id="viewcnt" value="${pds.viewcnt }"
+									 readonly />
 							</div>	
 						</div>	
 						<div class="form-group col-sm-12">
 							<label for="content">내 용</label>
-								<div id="content">${pds.content }</div>
+							<div id="content">${pds.content }</div>	
 						</div>
 						<div class="form-group col-sm-12">
 							<div class="card card-outline card-success">
@@ -56,25 +58,21 @@
 								<div class="card-footer">
 									<div class="row">
 										<c:forEach items="${pds.attachList }" var="attach">
-											<div class="col-md-4 col-sm-4 col-xs-12" style="cursor:pointer;" 
-											onclick="location.href='<%=request.getContextPath()%>/attach/getFile.do?pno=${pds.pno }&ano=${attach.ano}';">
-												<div class="info-box">
-													<span class="info-box-icon bg-yellow">
+											<div class="col-md-4 col-sm-4 col-xs-12"  style="cursor:pointer;"
+								onclick="location.href='<%=request.getContextPath()%>/attach/getFile.do?pno=${pds.pno }&ano=${attach.ano }';">
+												<div class="info-box">	
+												 	<span class="info-box-icon bg-yellow">
 														<i class="fa fa-copy"></i>
 													</span>
 													<div class="info-box-content">
-														<span class="info-box-text">
-															<fmt:formatDate value="${attach.regDate }" pattern="yyyy-MM-dd" />
+														<span class ="info-box-text">
+															<fmt:formatDate value="${attach.regDate }" pattern="yyyy-MM-dd" />	
 														</span>
-														<span class="info-box-number">${attach.fileName }</span>
+														<span class ="info-box-number">${attach.fileName }</span>
 													</div>
 												</div>
-											</div>
+											 </div>											 
 										</c:forEach>
-										
-										
-										
-										
 									</div>
 								</div>				
 							</div>
@@ -97,6 +95,24 @@
   </div>
   <!-- /.content-wrapper -->
   
-
+  <%@ include file="detail_js.jsp" %>
   
-  <%@ include file="detail_js.jsp"%>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  

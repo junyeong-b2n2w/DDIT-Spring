@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ page trimDirectiveWhitespaces="true"%>
+    pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,9 +22,10 @@
 <!-- Google Font: Source Sans Pro -->
 <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
+
 <body>
 
-<div class="" style="min-height: 2008.25px;">
+<div class="" style="min-height: 1589.56px;">
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <div class="container-fluid">
@@ -73,6 +75,10 @@
     <!-- /.content -->
   </div>
 
+
+
+
+
 <!-- jQuery -->
 <script src="<%=request.getContextPath() %>/resources/bootstrap/plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
@@ -81,9 +87,6 @@
 <script src="<%=request.getContextPath() %>/resources/bootstrap/dist/js/adminlte.min.js"></script>
 </body>
 </html>
-
-
-
 
 
 

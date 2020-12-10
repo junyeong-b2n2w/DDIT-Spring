@@ -74,10 +74,7 @@
 							<div class="time-label" id="repliesDiv">
 								<span class="bg-green">Replies List </span>							
 							</div>
-							<div class="replyLi" data-rno={{rno}}>
-								<i class="fas fa-comments bg-yellow"></i>
-							 
-							</div>
+							
 						</div>
 						<div class='text-center'>
 							<ul id="pagination" class="pagination justify-content-center m-0">

@@ -3,31 +3,44 @@ package kr.or.ddit.dto;
 import java.util.Date;
 
 public class MemberVO {
-
-	private String id; // 아이디
-
-	private String pwd; // 비밀번호
-	private String name; // 이름
-	private String email; // 이메일
-	private String phone; // 휴대전화번호
-	private String picture; // 사진
+	private String id;  //아이디
+	private String pwd; //패스워드
+	private String name; //이름
+	private String phone; //전화번호
+	private String email;  //이메일
+	private String picture; // 사진파일 경로/파일명
 	private String address; // 주소
-	private Date regDate; // 입사일
+	private Date regDate; // 등록일
 	private String register; // 등록자
 	private String authority; // 권한
-	private int enabled; // 0퇴사 1재직 2휴직
+	private int enabled;   // 사용여부
+	
+	
 	
 	public MemberVO() {}
-	
-	public MemberVO(String id, String pwd, String name, String email, String phone) {
+	public MemberVO(String id, String pwd, String name, String phone, String email) {
 		super();
 		this.id = id;
 		this.pwd = pwd;
 		this.name = name;
-		this.email = email;
 		this.phone = phone;
+		this.email = email;
 	}
-	
+	public MemberVO(String id, String pwd, String name, String phone, String email, String picture, String address,
+			Date regDate, String register, String authority, int enabled) {
+		super();
+		this.id = id;
+		this.pwd = pwd;
+		this.name = name;
+		this.phone = phone;
+		this.email = email;
+		this.picture = picture;
+		this.address = address;
+		this.regDate = regDate;
+		this.register = register;
+		this.authority = authority;
+		this.enabled = enabled;
+	}
 	public String getId() {
 		return id;
 	}
@@ -46,17 +59,17 @@ public class MemberVO {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
 	public String getPhone() {
 		return phone;
 	}
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	public String getPicture() {
 		return picture;
@@ -96,11 +109,12 @@ public class MemberVO {
 	}
 	@Override
 	public String toString() {
-		return "MemberVO [id=" + id + ", pwd=" + pwd + ", name=" + name + ", email=" + email + ", phone=" + phone
+		return "MemberVO [id=" + id + ", pwd=" + pwd + ", name=" + name + ", phone=" + phone + ", email=" + email
 				+ ", picture=" + picture + ", address=" + address + ", regDate=" + regDate + ", register=" + register
 				+ ", authority=" + authority + ", enabled=" + enabled + "]";
 	}
-
 	
-
+	
+	
 }
+

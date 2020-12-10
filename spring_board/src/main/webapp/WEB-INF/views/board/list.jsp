@@ -17,8 +17,7 @@
 	
 
 <body>
-  <c:set var="pageMaker" value="${dataMap.pageMaker }" />	
-  	
+    	
    <div class="content-wrapper" >
     
 	<jsp:include page="/WEB-INF/views/content_header.jsp">
@@ -61,19 +60,19 @@
 						<th>등록일</th>
 						<th style="width:10%;">조회수</th>
 					</tr>				
-					<c:if test="${empty dataMap.boardList }" >
+					<c:if test="${empty boardList }" >
 						<tr>
 							<td colspan="5">
 								<strong>해당 내용이 없습니다.</strong>
 							</td>
 						</tr>
 					</c:if>						
-					<c:forEach items="${dataMap.boardList }" var="board">
+					<c:forEach items="${boardList }" var="board">
 						<tr style='font-size:0.85em;'>
 							<td>${board.bno }</td>
 							<td id="boardTitle" style="text-align:left;max-width: 100px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
 							<a href="javascript:OpenWindow('detail.do?bno=${board.bno }','상세보기',800,700);">
-								<span class="col-sm-12 ">${board.title } 
+								<span class="col-sm-12 ">${board.title }
 									<c:if test="${board.replycnt ne 0 }">		
 										<span class="nav-item">															
 										&nbsp;&nbsp;<i class="fa fa-comment"></i>
@@ -102,41 +101,7 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
-	<form id="jobForm">
-		  <input type='hidden' name="page" value="${pageMaker.cri.page}" />
-		  <input type='hidden' name="perPageNum" 
-		  		 value="${pageMaker.cri.perPageNum}"/>
-		  <input type='hidden' name="searchType" 
-		         value="${pageMaker.cri.searchType }" />
-		  <input type='hidden' name="keyword" 
-		         value="${pageMaker.cri.keyword }" />
-	</form>
-   	
-<script>
-	
-	$('#searchBtn').on('click',function(e){
-		/* 
-		if($('input[name="keyword"]').val() !=""){
-			if($('select[name="searchType"]').val()==""){
-				alert("검색구분은 필수입니다.");
-				$('input[name="searchType"]').focus();
-				return;
-			}			
-		} */
-		
-		var jobForm=$('#jobForm');
-		jobForm.find("[name='page']").val(1);
-		jobForm.find("[name='searchType']").val($('select[name="searchType"]').val());
-		jobForm.find("[name='keyword']").val($('input[name="keyword"]').val());
-		
-		/* alert(jobForm.serialize()); */
-		
-		jobForm.attr("action","list.do").attr("method","get");
-		jobForm.submit();
-	});
-	
-	
-</script>
+
 
 </body>
 

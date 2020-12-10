@@ -1,6 +1,6 @@
 <%@page import="java.sql.SQLException"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" errorPage="/WEB-INF/views/error/500_by_JSP.jsp"%>
 <%@ page trimDirectiveWhitespaces="true" %>
 
 
@@ -40,8 +40,8 @@
 								<div class="card card-outline card-success">
 									<div class="card-header">
 										<h5 style="display:inline;line-height:40px;">첨부파일 : </h5>
-										&nbsp;&nbsp;<button class="btn btn-xs btn-primary" 
-										type="button" id="addFileBtn">Add File</button>
+										&nbsp;&nbsp;
+										<button class="btn btn-xs btn-primary" type="button" id="addFileBtn">Add File</button>
 									</div>									
 									<div class="card-footer fileInput">
 									</div>
@@ -61,38 +61,45 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
-  <script>
-  window.onload=function(){
-	  SmartEditor_summernote($('#content'));
-	
-	  Attach_action();
-	  
-	  
-	  $('#registBtn').on('click', function(e){
-		  //alert("regist btn click;");
-		  var files = $('input[name="uploadFile"]');
-		  for (var file of files){
-			  console.log(file.name + " : " + file.value);
-			  if(file.value==""){
-				  alert("파일을 선택하세요");
-				  file.focus();
-				  file.click();
-				  return;
-			  }
-		  }
-		  
-		  if($("input[name='title']").val()==""){ //form.title.value
-			  alert("제목은 필수입니다. ");
-		  	  $("input[name='title']").focus();
-		  	  return;
-		  }
-		  
-		  document.registForm.submit();
-		  
-	  });
-  }
-	  
-  </script>
   
+  
+  <script>
+  	window.onload=function(){
+  		SmartEditor_summernote($('#content'));
+  		
+  		Attach_action();
+  		
+  		$('#registBtn').on('click',function(e){
+  			var files = $('input[name="uploadFile"]');
+  			for(var file of files){
+  				console.log(file.name+" : "+file.value);
+  				if(file.value==""){
+  					alert("파일을 선택하세요.");
+  					file.focus();
+  					file.click();
+  					return;
+  				}
+  			}	
+  			
+  			if($("input[name='title']").val()==""){ //form.title.value
+  				alert("제목은 필수입니다.");
+  				$("input[name='title']").focus();
+  				return;
+  			}
+  			
+  			document.registForm.submit();	
+  		});
+  	}
+  
+  </script>
+    
   <%@ include file="/WEB-INF/views/common/summernote.jsp" %>
-  		<%@ include file="attach_js.jsp"%>
+  <%@ include file="attach_js.jsp" %>
+  
+  
+  
+  
+  
+  
+  
+  

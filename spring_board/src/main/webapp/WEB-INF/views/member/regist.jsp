@@ -120,5 +120,15 @@
 </div>
 <!-- /.content-wrapper -->
 
-<%@ include file="picture_js.jsp" %>
+
 <%@ include file="regist_js.jsp" %>
+<%@ include file="picture_js.jsp" %>
+
+
+
+
+
+
+
+
+

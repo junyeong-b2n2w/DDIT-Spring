@@ -13,23 +13,26 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import kr.or.ddit.dto.MemberVO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:/kr/or/ddit/context/root-context.xml")
+@ContextConfiguration("classpath:kr/or/ddit/context/root-context.xml")
 public class TestSqlSession {
-
+	
 	@Autowired
 	private SqlSession session;
 	
 	@Test
-	public void testSession() {
+	public void testSession(){
 		Assert.assertNotEquals(null, session);
 	}
 	
 	@Test
-	public void testSelectMember () throws SQLException{
-		String id = "mimi";
+	public void testSelectMember()throws SQLException{
+		
+		String id="mimi";
 		
 		MemberVO member = session.selectOne("Member-Mapper.selectMemberById",id);
 		
-		Assert.assertEquals(id,member.getId());
+		Assert.assertEquals(id, member.getId());
 	}
+	
+
 }

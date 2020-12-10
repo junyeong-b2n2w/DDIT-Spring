@@ -8,10 +8,11 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionContext;
 
-public class MockHttpSession implements HttpSession{
-
+public class MockHttpSesion implements HttpSession {
 	
-	private Map<String, Object> attrMap = new HashMap<String, Object>();
+	
+	private Map<String,Object> attrMap = new HashMap<String,Object>();
+
 	@Override
 	public long getCreationTime() {
 		// TODO Auto-generated method stub
@@ -39,7 +40,7 @@ public class MockHttpSession implements HttpSession{
 	@Override
 	public void setMaxInactiveInterval(int interval) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -55,8 +56,7 @@ public class MockHttpSession implements HttpSession{
 	}
 
 	@Override
-	public Object getAttribute(String name) {
-
+	public Object getAttribute(String name) {		
 		return attrMap.get(name);
 	}
 
@@ -81,31 +81,31 @@ public class MockHttpSession implements HttpSession{
 	@Override
 	public void setAttribute(String name, Object value) {
 		attrMap.put(name, value);
-		
+
 	}
 
 	@Override
 	public void putValue(String name, Object value) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void removeAttribute(String name) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void removeValue(String name) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void invalidate() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -114,5 +114,4 @@ public class MockHttpSession implements HttpSession{
 		return false;
 	}
 
-	
 }

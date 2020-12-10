@@ -1,6 +1,7 @@
 package kr.or.ddit.utils;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Reader;
 import java.text.DecimalFormat;
 import java.util.Calendar;
@@ -10,39 +11,45 @@ import org.apache.ibatis.io.Resources;
 
 public class GetUploadPath {
 	
-	private static Properties properties = new Properties();
 	
-	static {
-		String resource = "com/jsp/properties/uploadPath.properties";
+	private static Properties properties = new Properties();
+	static{
+		String resource = "com/jsp/properties/uploadPath.properties";		
 		try {
 			Reader reader = Resources.getResourceAsReader(resource);
-			properties.load(reader);
-		} catch (Exception e) {
+			properties.load(reader);				
+		
+		}catch(IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
 	public static String getUploadPath(String key) {
-		String uploadPath = null;
+		String uploadPath=null;
 		uploadPath=properties.getProperty(key);
-		uploadPath=uploadPath.replace("/", File.separator);
+		uploadPath=uploadPath.replace("/",File.separator);
 		return uploadPath;
 	}
 	
 	public static String getUploadDatePath(String key) {
 		String uploadDatePath = getUploadPath(key);
 		
-		Calendar cal = Calendar.getInstance();
+		Calendar cal=Calendar.getInstance();
 		
-		String yearPath = File.separator + cal.get(Calendar.YEAR);
-		String monthPath = File.separator + new DecimalFormat("00").format( cal.get(Calendar.MONTH) );
-		String datePath = File.separator + new DecimalFormat("00").format( cal.get(Calendar.DATE) );
+		String yearPath=File.separator+cal.get(Calendar.YEAR);
+		String monthPath=File.separator+new DecimalFormat("00").format(cal.get(Calendar.MONTH)+1);
+		String datePath=File.separator+new DecimalFormat("00").format(cal.get(Calendar.DATE));
 		
-		String savePath = yearPath + monthPath + datePath;
+		String savePath = yearPath+monthPath+datePath;		
 		uploadDatePath+=savePath;
-		
+	
 		return uploadDatePath;
 	}
-	
-	
+
 }
+
+
+
+
+
+

@@ -10,77 +10,80 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import kr.or.ddit.command.SearchCriteria;
-import kr.or.ddit.dao.MemberDAO;
 import kr.or.ddit.dto.MemberVO;
 import kr.or.ddit.exception.InvalidPasswordException;
 import kr.or.ddit.exception.NotFoundIDException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:/kr/or/ddit/context/root-context.xml")
+@ContextConfiguration(locations="classpath:kr/or/ddit/context/root-context.xml")
 public class TestMemberServiceImpl {
 	
-	
+
 	@Autowired
 	private MemberServiceImpl service;
 	
 	@Before
-	public void init() {
-		service.setMemberDAO(new MockMemberDAO());
+	public void init(){
+		service.setMemberDAO(new MockMemberDAO());		
 	}
 	
 	@Test
-	public void testGetList() throws SQLException{
-		SearchCriteria cri = new SearchCriteria();
-		List<MemberVO> memberList =  (List<MemberVO> ) service.getSearchMemberList(cri).get("memberList");
+	public void testGetList()throws SQLException{
 		
-		Assert.assertEquals(2, memberList.size());
+		SearchCriteria cri = new SearchCriteria();
+			
+		List<MemberVO> memberList = (List<MemberVO>)service.getSearchMemberList(cri).get("memberList");
+		
+		Assert.assertEquals(2,memberList.size());
 	}
-	
-	
 	@Test
-	public void testLogin() throws SQLException{
+	public void testLogin()throws SQLException{
 		String testID = "kkk";
-		String testPWD = "kkk";
+		String testPWD ="kkk";
 		
 		HttpSession session = new MockHttpSession();
 		
-		try {
-			service.login(testID, testPWD, session);
+		try{
+			service.login(testID, testPWD,session);
 			
-			Assert.assertEquals(1, 0);
-		} catch (NotFoundIDException e) {
-			Assert.assertEquals(1, 1);
-		} catch (InvalidPasswordException e) {
-			Assert.assertEquals(1, 0);
+			Assert.assertEquals(1,0);
+		}catch(NotFoundIDException e){
+			Assert.assertEquals(1,1);
+		}catch(InvalidPasswordException e){
+			Assert.assertEquals(1,0);
 		}
 		
-		testID = "mimi";
-		try {
-			service.login(testID, testPWD, session);
+		testID="mimi";
+		try{
+			service.login(testID,testPWD,session);
 			
-			Assert.assertEquals(1, 0);
-		} catch (InvalidPasswordException e) {
-			Assert.assertEquals(1, 1);
-		} catch (NotFoundIDException e) {
-			Assert.assertEquals(1, 2);
+			Assert.assertEquals(1,0);
+		}catch(InvalidPasswordException e){
+			Assert.assertEquals(1,1);
+		}catch(NotFoundIDException e){
+			Assert.assertEquals(1,2);
 		}
 		
-		testPWD = "1234";
-		try {
-			service.login(testID, testPWD, session);
+		testPWD="1234";
+		try{
+			service.login(testID,testPWD,session);
 			
 			Assert.assertNotNull(session.getAttribute("loginUser"));
-		} catch (InvalidPasswordException e) {
-			Assert.assertEquals(1, 3);
-		} catch (NotFoundIDException e) {
-			Assert.assertEquals(1, 4);
+			
+		}catch(InvalidPasswordException e){
+			Assert.assertEquals(1,3);
+		}catch(NotFoundIDException e){
+			Assert.assertEquals(1,4);
 		}
 		
-		
 	}
-	
 }
+
+
+
+

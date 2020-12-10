@@ -41,7 +41,7 @@
 		    resultType="pds">
 		select
 		*
-		from  
+		from
 		pds
 		where pno is not null  			  	
 		<include refid="search" />
@@ -100,3 +100,7 @@
 		select pds_seq.nextval as pno from dual
 	</select>
 </mapper>
+
+
+
+

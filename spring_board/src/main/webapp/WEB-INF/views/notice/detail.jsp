@@ -26,27 +26,30 @@
 					    </div>
 					</div>
 					<div class="card-body">
-						<div class="form-group col-sm-12">
-							<label for="title">제 목</label> <span class="form-control" id="title">${notice.title }</span>
+						<div class="form-group col-xs-12">
+							<label for="title">제 목</label>
+							<span class="form-control" id="title" >${notice.title }"</span>
 						</div>
 						<div class="row">	
 							<div class="form-group col-sm-4" >
 								<label for="writer">작성자</label>
-							<span class="form-control" id="writer">${notice.writer }</span>
+								<span class="form-control" id="writer" >${notice.writer }</span>
 							</div>		
 							
 							<div class="form-group col-sm-4" >
 								<label for="regDate">작성일</label>
-							<span class="form-control" id="regDate"><fmt:formatDate value="${notice.regDate }" pattern="yyyy-MM-dd HH:mm"/></span>
+								<span class="form-control" id="regDate" >
+									<fmt:formatDate value="${notice.regDate }" pattern="yyyy-MM-dd"/> 
+								</span>
 							</div>
 							<div class="form-group col-sm-4" >
 								<label for="viewcnt">조회수</label>
-								<span class="form-control" id="viewcnt">${notice.viewcnt }</span>
+								<span class="form-control" id="viewcnt" >${notice.viewcnt }</span>
 							</div>
 						</div>		
 						<div class="form-group col-sm-12">
 							<label for="content">내 용</label>
-							<div id="content">${notice.content }</div>
+							<div id="content">${notice.content }</div>	
 						</div>
 												
 					</div>													
@@ -58,38 +61,45 @@
   </div>
   <!-- /.content-wrapper -->
   
-  <form role="form">
-  	<input type="hidden" name = "nno" value="${notice.nno }" />
-  </form>
   
-  <script>
-  window.onload =function(){
-  	var formObj = $("form[role='form']");
-  	
-  	$('button#modifyBtn').on('click', function(event){
-  		//alert("modify btn click");
-  		formObj.attr({
-  			'action':'modifyForm.do',
-  			'method':'get'
-  		})
-  		formObj.submit();
-  	});
-  	$('button#removeBtn').on('click', function(event){
-  		//alert("rebove btn click");
-  		var answer = confirm("정말 삭제하시겠습니까?");
-  		if(answer){
-	  		formObj.attr({
-	  			'action':'remove.do',
-	  			'method':'post'
-	  		})
-	  		formObj.submit();
-  		}
-  	})
-  	$('button#listBtn').on('click', function(event){
-  		//alert("list btn click");
-  		window.opener.location.href="<%=request.getContextPath()%>/notice/list.do";
-  		window.close();
-  	})
-  }
-  </script>
+  
+<form role="form">
+	<input type="hidden" name="nno" value="${notice.nno }" />
+</form>  
+
+	
+<script>
+window.onload=function(){
+	var formObj = $("form[role='form']");
+	
+
+	$('button#modifyBtn').on('click',function(evnet){
+		//alert("modify click");
+		formObj.attr({
+			'action':'modifyForm.do',
+			'method':'get'
+		});
+		formObj.submit();
+	});
+	$("#removeBtn").on("click", function(){
+		//alert("remove click");
+		var answer = confirm("정말 삭제하시겠습니까?");
+		if(answer){		
+			formObj.attr("action", "remove.do");
+			formObj.attr("method", "post");
+			formObj.submit();
+		}
+	});
+	$("#listBtn").on("click", function(){
+		//alert("list click");
+		window.opener.location.href="<%=request.getContextPath()%>/notice/list.do";
+		window.close();
+	});
+}
+</script>
+
+
+
+  
+  
   

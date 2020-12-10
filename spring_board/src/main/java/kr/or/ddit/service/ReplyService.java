@@ -8,15 +8,15 @@ import kr.or.ddit.dto.ReplyVO;
 
 public interface ReplyService {
 
-	//리스트보기 
+	// 리스트보기
 	Map<String, Object> getReplyList(int bno, SearchCriteria cri) throws SQLException;
-	
-	//등록
+
+	// 등록
 	void registReply(ReplyVO reply) throws SQLException;
-	
-	//수정
+
+	// 수정
 	void modifyReply(ReplyVO reply) throws SQLException;
-	
-	//삭제 
+
+	// 삭제
 	void removeReply(int rno) throws SQLException;
 }

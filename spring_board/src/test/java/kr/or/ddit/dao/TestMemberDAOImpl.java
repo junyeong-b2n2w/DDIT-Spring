@@ -13,40 +13,44 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.or.ddit.dto.MemberVO;
 
-
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:/kr/or/ddit/context/root-context.xml")
+@ContextConfiguration(locations="classpath:kr/or/ddit/context/root-context.xml")
 @Transactional
 public class TestMemberDAOImpl {
-
+	
 	@Autowired
 	private MemberDAO memberDAO;
 	
 	@Test
-	public void testSelectMember () throws SQLException{
-		String id = "mimi";
+	public void testSelectMember()throws SQLException{
+		String id="mimi";
 		
 		MemberVO member = memberDAO.selectMemberById(id);
 		
 		Assert.assertEquals(id,member.getId());
 	}
 	
-	@Test
+	@Test	
 	@Rollback
-	public void testInsertMember () throws SQLException{
+	public void testInsertMember()throws SQLException{
+		MemberVO testMember = new MemberVO();
+		testMember.setId("kaka");
+		testMember.setPwd("kaka");
+		testMember.setName("kaka");
+		testMember.setEmail("kaka@kaka.net");
+		testMember.setPhone("000-0000-0000");
+		testMember.setPicture("noImage.jpg");
 		
-		MemberVO member = new MemberVO();
+		memberDAO.insertMember(testMember);
 		
-		member.setId("jiji");
-		member.setAddress("12312");
-		member.setEmail("123!@@#!");
-		member.setName("kkkkk");
-		member.setPicture("1231231");
+		MemberVO result = memberDAO.selectMemberById(testMember.getId());
 		
-		member.setPwd("12312312");
-		member.setPhone("123123");
-		
-		memberDAO.insertMember(member);
-		
-	}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+		Assert.assertEquals(testMember.getId(),result.getId());
+	}
 }
+
+
+
+
+
+

@@ -15,22 +15,26 @@ import kr.or.ddit.exception.InvalidPasswordException;
 import kr.or.ddit.exception.NotFoundIDException;
 
 public class MemberServiceImpl implements MemberService {
-
-	private MemberDAO memberDAO; // = MemberDAOImpl.getInsetance();
 	
+	private MemberDAO memberDAO;// =MemberDAOImpl.getInstance();
 	public void setMemberDAO(MemberDAO memberDAO) {
 		this.memberDAO = memberDAO;
 	}
 	
+
 	@Override
-	public void login(String id, String pwd , HttpSession session) throws SQLException, NotFoundIDException, InvalidPasswordException {
+	public void login(String id, String pwd, HttpSession session) throws SQLException, 
+																		 NotFoundIDException, 
+																		 InvalidPasswordException {
 		MemberVO member = memberDAO.selectMemberById(id);
-		
-		if(member == null) throw new NotFoundIDException();
-		if(!pwd.equals(member.getPwd())) throw new InvalidPasswordException();
+		if (member == null)
+			throw new NotFoundIDException();
+		if (!pwd.equals(member.getPwd()))
+			throw new InvalidPasswordException();
 		
 		session.setAttribute("loginUser", member);
 		session.setMaxInactiveInterval(6*60);
+
 	}
 
 	@Override
@@ -41,13 +45,12 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public Map<String, Object> getSearchMemberList(SearchCriteria cri) throws SQLException {
-		
 		List<MemberVO> memberList = memberDAO.selectMemberList(cri);
-		
+
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
 		pageMaker.setTotalCount(memberDAO.selectMemberListCount(cri));
-		
+
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		dataMap.put("memberList", memberList);
 		dataMap.put("pageMaker", pageMaker);
@@ -69,22 +72,25 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public void modify(MemberVO member) throws SQLException {
-		memberDAO.updateMemeber(member);
+		memberDAO.updateMember(member);
+
 	}
 
 	@Override
 	public void remove(String id) throws SQLException {
-		memberDAO.deleteMemeber(id);
+		memberDAO.deleteMember(id);
+
 	}
 
 	@Override
 	public void disabled(String id) throws SQLException {
-		memberDAO.disabledMemeber(id);
+		memberDAO.disabledMember(id);
 	}
 
 	@Override
 	public void enabled(String id) throws SQLException {
-		memberDAO.enabledMemeber(id);
+		memberDAO.enabledMember(id);
+
 	}
 
 }

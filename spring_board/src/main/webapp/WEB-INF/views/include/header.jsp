@@ -1,9 +1,10 @@
 <%@page import="java.net.URLDecoder"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page trimDirectiveWhitespaces="true" %>    
-<%@ taglib prefix="decorator" uri="http://www.opensymphony.com/sitemesh/decorator" %>    
+<%@ page trimDirectiveWhitespaces="true" %>
+<%-- <%@ taglib prefix="decorator" uri="http://www.opensymphony.com/sitemesh/decorator" %> --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <!--
 This is a starter template page. Use this page to start your new project from
@@ -15,7 +16,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-  <title><decorator:title default="뉸늉냔냥"/></title>
+  <title></title>
+  
 
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/bootstrap/plugins/fontawesome-free/css/all.min.css">
@@ -23,8 +25,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/bootstrap/dist/css/adminlte.min.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-  
-  <decorator:head />
+
+
+
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -36,15 +39,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
-      
-      <c:forEach items="${menuList}" var="menu">
+     <c:forEach items="${menuList }" var="menu">
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="javascript:subMenu('${menu.mcode }');goPage('${menu.murl}','${menu.mcode}');"
-        	onclick=""
-         class="nav-link">${menu.mname}</a>
+        <a href="javascript:subMenu('${menu.mcode }');goPage('${menu.murl}','${menu.mcode }');"
+           onclick=""
+         class="nav-link">${menu.mname }</a>
       </li>
-      </c:forEach>
-      
+	</c:forEach>    
     </ul>
 
     <!-- SEARCH FORM -->
@@ -166,21 +167,20 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Sidebar -->
     <div class="sidebar">
       <!-- Sidebar user panel (optional) -->
-      	<div class="user-panel mt-3 pb-3 mb-3 d-flex">
-      		<div class="image">
-      			<img src="<%=request.getContextPath() %>/member/getPicture.do?picture=${loginUser.picture}" class="img-circle elevation-2" alt="user Image" />
-      		</div>
-      		<div class="info">
-      			<div class="row">
-      				<a class="col-md-8 d-block" href="#">${loginUser.id }</a>
-      				<button class="btn btn-xs btn-primary col-xs-3" type="button"
-      				 onclick="location.href='<%=request.getContextPath() %>/common/logout.do';">Logout</button>
-      			</div>
-      			<a href="tel:${loginUser.phone }">tel : ${loginUser.phone }</a><br/>
-      			<a href="mailto:${loginUser.email }">email : ${loginUser.email }</a>
-      		</div>
-      	
-      	</div>
+       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="image">
+          <img src="<%=request.getContextPath() %>/member/getPicture.do?picture=${loginUser.picture}" class="img-circle elevation-2" alt="User Image">
+        </div>
+        <div class="info">
+          <div class="row">
+          	<a class="col-md-8 d-block" href="#" >${loginUser.id }</a>
+          	<button class="btn btn-xs btn-primary col-xs-3 " type="button" 
+          		onclick="location.href='<%=request.getContextPath() %>/common/logout.do';" >Logout</button>
+          </div>
+          <a href="tel:${loginUser.phone }">tel : ${loginUser.phone }</a><br/>
+          <a href="mailto:${loginUser.email }">email : ${loginUser.email }</a>			          
+        </div>
+      </div>
 
       <!-- Sidebar Menu -->
       <nav class="mt-2">
@@ -192,4 +192,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     </div>
     <!-- /.sidebar -->
   </aside>
-
+  
+  
+  
+  
+  

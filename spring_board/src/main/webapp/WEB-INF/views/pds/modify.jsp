@@ -2,9 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ page trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-
 
 
   <!-- Content Wrapper. Contains page content -->
@@ -26,7 +24,7 @@
 					<div class="card-body">
 						<form enctype="multipart/form-data" role="form" method="post" action="modify.do" name="modifyForm">
 							
-							<input type='text' name="pno" value="${pds.pno }" />
+							<input type='hidden' name="pno" value="${pds.pno }" />
 						
 							<div class="form-group">
 								<label for="writer">작성자</label> 
@@ -40,7 +38,7 @@
 							</div>
 							<div class="form-group">
 								<label for="content">내 용</label>
-								<textarea id="content" name="content">${fn:escapeXml(pds.content)}</textarea>
+								<textarea id="content" name="content">${fn:escapeXml(pds.content) }</textarea>
 							</div>
 							
 							<div class="form-group">								
@@ -86,8 +84,19 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
-
+    
   
   
-  	<%@ include file="modify_js.jsp" %>
-    <%@ include file="/WEB-INF/views/common/summernote.jsp" %>
+ 
+  <%@ include file="modify_js.jsp" %>
+  <%@ include file="/WEB-INF/views/common/summernote.jsp" %>
+  
+	
+	
+	
+	
+	
+	
+	
+	
+	

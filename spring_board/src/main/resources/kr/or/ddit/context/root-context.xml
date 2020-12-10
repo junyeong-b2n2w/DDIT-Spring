@@ -7,15 +7,9 @@
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	
+	<context:property-placeholder file-encoding="utf-8" 
+								  location="classpath:kr/or/ddit/properties/*.properties"/>
 	
-	<!-- 프로퍼티들을 가져와서 변수처럼 저장해 놓는다. -->
-	<!-- 이름이 겹치면 불상사가 일어날수 있어서 각 propertis의 key값은 ~~.~~ 형태로 . 을 붙여서 저장하는걸 추천 -->
-	<context:property-placeholder file-encoding="utf-8" location="classpath:kr/or/ddit/properties/*.properties"/>
-	
-	<!-- db 연결용 xml -->
-	<import resource="dataSource-context.xml"/>
-	
-	<!-- 각 객체에 인스턴스 주입용 xml -->
-	<import resource="application-context.xml"/>
-	
+	<import resource="dataSource-context.xml"/>	
+	<import resource="application-context.xml" />
 </beans>

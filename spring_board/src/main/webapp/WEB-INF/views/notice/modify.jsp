@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ page trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <body>
 
 
@@ -30,18 +31,19 @@
 					</div><!--end card-header  -->
 					<div class="card-body">
 						<form role="form" method="post" action="modify.do" name="modifyForm">
-							<input type="hidden" name="nno" value="${notice.nno }">
+							<input type="hidden" name="nno" value="${notice.nno }" />
 							<div class="form-group">
 								<label for="title">제 목</label> 
-								<input class="form-control" name="title" id="title" value="${notice.title }">
+								<input type="text" id="title" name='title' class="form-control" value="${notice.title }">
 							</div>
 							<div class="form-group">
 								<label for="writer">작성자</label> 
-								<input class="form-control" name="writer" readonly id="writer" value="${notice.writer }">
+								<input type="text" id="writer" readonly	name="writer" class="form-control"  value="${notice.writer }">
 							</div>
 							<div class="form-group">
 								<label for="content">내 용</label>		
-								<textArea id="content" name="content">${fn:escapeXml(notice.content)}</textArea>
+								<textarea class="form-control" name="content" id="content" rows="3"
+									placeholder="500자 내외로 작성하세요.">${fn:escapeXml(notice.content) }</textarea>						
 							</div>
 						</form>
 					</div><!--end card-body  -->
@@ -54,30 +56,40 @@
   </div>
   <!-- /.content-wrapper -->
   
-  <script>
-  	window.onload=function(){
-  		SmartEditor_summernote($('#content'));  
-  		
-  		$('#modifyBtn').on('click', function(e){
-  			var title = $('input[name="title"]')
-  			if(title.val()==""){
-  				alert("제목은 필수입니다.");
-  				title.focus();
-  				return;
-  			}
-  			var content = $('textarea[name="content"]')
-  			if(content.val()==""){
-  				alert("제목은 필수입니다.");
-  				content.focus();
-  				return;
-  			}
-  			var form = document.modifyForm;
-  			form.submit();
-  		});
-  		
-  		$('#cancelBtn').on('click', function(e){
-  			history.go(-1);
-  		})
-  	}
-  </script>
-    <%@ include file="/WEB-INF/views/common/summernote.jsp" %>
+<script>
+ 	window.onload=function(){
+ 		
+ 		SmartEditor_summernote($('#content'));
+ 		
+ 		$('#modifyBtn').on('click',function(e){				
+ 			var title=$('input[name="title"]');
+ 			if(title.val()==""){
+ 				alert("제목은 필수입니다.");			
+ 				title.focus();
+ 				return;
+ 			}
+ 			
+ 			var content=$('textarea[name="content"]');
+ 			if(content.val()==""){
+ 				alert("내용은 필수입니다.");			
+ 				content.focus();
+ 				return;
+ 			}
+ 			var form=document.modifyForm;		
+ 			form.submit();
+ 		});
+ 		
+ 		$('#cancelBtn').on('click',function(e){
+ 			history.go(-1);
+ 		});
+ 		
+ 	}
+ 
+ </script>
+  
+  
+  <%@ include  file="/WEB-INF/views/common/summernote.jsp"%>  
+</body>
+
+
+

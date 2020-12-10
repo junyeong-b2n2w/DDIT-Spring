@@ -85,6 +85,9 @@ window.onload=function(){
 	$('#cancelBtn').on('click',function(e){
 		history.go(-1);
 	});
+	
+	SmartEditor_summernote($('#content'));
+	ShowReply();
 }
 </script>
 

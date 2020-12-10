@@ -5,16 +5,14 @@ import java.util.List;
 
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSession ;
 
 import kr.or.ddit.command.SearchCriteria;
 import kr.or.ddit.dto.BoardVO;
 
 public class BoardDAOImpl implements BoardDAO{
-	
-	private SqlSession  sqlSession ;
-	public void setSqlSession (SqlSession  sqlSession ) {
-		this.sqlSession  = sqlSession ;
+	private SqlSession sqlSession;
+	public void setSqlSession(SqlSession sqlSession) {
+		this.sqlSession = sqlSession;
 	}
 	
 	@Override
@@ -61,7 +59,7 @@ public class BoardDAOImpl implements BoardDAO{
 
 	@Override
 	public void increaseViewCnt(int bno) throws SQLException {
-		sqlSession.update("Board-Mapper.increaseViewCount",bno);
+		sqlSession.update("Board-Mapper.increaseViewCnt",bno);
 	}
 
 	@Override

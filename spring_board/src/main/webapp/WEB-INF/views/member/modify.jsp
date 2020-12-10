@@ -3,25 +3,22 @@
 <%@ page trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-
 <body>
 
   <!-- Content Wrapper. Contains page content -->
   <div>
-  
-  <jsp:include page="/WEB-INF/views/content_header.jsp">
-  	<jsp:param value="회원관리" name="subject" />
-  	<jsp:param value="수정하기" name="item" />
-  	<jsp:param value="list.do" name="url" />
-  </jsp:include>
-  
+   <jsp:include page="/WEB-INF/views/content_header.jsp">
+    	<jsp:param value="회원관리" name="subject"/>
+    	<jsp:param value="수정하기" name="item"/>
+    	<jsp:param value="list.do" name="url"/>
+    </jsp:include>
   <!-- Main content -->
   <section class="content register-page" >
 	<form role="form" class="form-horizontal" action="modify.do" method="post" enctype="multipart/form-data">	
 		<div class="register-box" style="min-width:450px;">	
 			<div class="register-card-body">	
 				<div class="row">					
-					<input type="hidden" name="oldPicture" value="" />
+					<input type="hidden" name="oldPicture" value="${member.picture }" />
 					<input type="file" id="inputFile" name="picture" style="display:none" onchange="imageChange_go();"/>
 					<div class="input-group col-md-12">
 						<div class="col-md-12" style="text-align: center;">
@@ -82,7 +79,7 @@
 				<div class="form-group row">
                   <label for="phone" class="col-sm-3 control-label text-center">전화번호</label>
                   <div class="col-sm-9">   
-                  	<input name="phone" type="text" class="form-control" id="inputPassword3" value="${member.phone.substring(0,3)}-${member.phone.substring(3,7)}-${member.phone.substring(7)} ">	                
+                  	<input name="phone" type="text" class="form-control" id="inputPassword3" value="${member.phone.substring(0,3) }-${member.phone.substring(3,7)}-${member.phone.substring(7) }">	                
                   </div>                  
                 </div>  
 				
@@ -100,9 +97,14 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
-  
- 
-  
-  <%@ include file="modify_js.jsp" %>
-  
+
+<%@ include file="modify_js.jsp" %>
+
 </body>
+
+
+
+
+
+
+

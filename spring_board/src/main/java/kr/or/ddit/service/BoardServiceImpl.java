@@ -21,7 +21,6 @@ public class BoardServiceImpl implements BoardService{
 	public void setReplyDAO(ReplyDAO replyDAO) {
 		this.replyDAO = replyDAO;
 	}
-
 	
 	@Override
 	public BoardVO getBoardForModify(int bno) throws SQLException {
@@ -60,8 +59,10 @@ public class BoardServiceImpl implements BoardService{
 		//현재 page 번호에 맞는 리스트를 perPageNum 개수 만큼 가져오기.
 		List<BoardVO> boardList=boardDAO.selectBoardCriteria(cri);
 		
+		//reply count 입력
 		for(BoardVO board : boardList) {
-			board.setReplycnt(replyDAO.countReply(board.getBno()));
+			int replycnt=replyDAO.countReply(board.getBno());
+			board.setReplycnt(replycnt);
 		}
 		
 		
