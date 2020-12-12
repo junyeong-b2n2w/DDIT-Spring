@@ -1,6 +1,9 @@
 package kr.or.ddit.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -12,12 +15,18 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+
 
 import kr.or.ddit.command.PdsModifyCommand;
 import kr.or.ddit.command.PdsRegistCommand;
@@ -228,5 +237,35 @@ public class PDSController {
 		
 		out.close();
 	}
+	
+	@RequestMapping("/getFile")
+	public ResponseEntity<byte[]> getFile(int ano) throws Exception{
+		InputStream in = null;
+		ResponseEntity<Byte[]> entity = null;
+		
+		AttachVO attach = attachDAO.selectAttachByAno(ano);
+		
+		String fileUploadPath = this.fileUploadPath;
+		String fileName  = attach.getFileName();
+		
+		try {
+			in = new FileInputStream(fileUploadPath+ File.separator + fileName);
+			fileName = fileName.substring(fileName.indexOf("$$") + 2);
+			
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+			headers.add("Content-Disposition", "attachment;filename=\"" + new String(fileName.getBytes("utf-8"), "ISO-8859-1")+ "\"");
+			
+			entity = new ResponseEntity<Byte[]>(IOUtils.toByteArray(in), headers, HttpStatus.CREATED);
+		} catch (IOException e) {
+			e.printStackTrace();
+			entity = new ResponseEntity<Byte[]>(HttpStatus.INTERNAL_SERVER_ERROR);
+		} finally {
+			in.close();
+		}
+		
+		return entity;
+	}
+	
 	
 }
