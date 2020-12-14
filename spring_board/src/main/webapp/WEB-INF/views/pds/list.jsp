@@ -96,7 +96,7 @@
 			</div>
 			<div class="card-footer">
 				<nav aria-label="pds list Navigation">
-					<ul class="pagination justify-content-center m-0">
+					<ul class="pagination justify-content-center m-0">						
 						<%@ include file="/WEB-INF/views/common/pagination.jsp" %>
 					</ul>
 				</nav>

@@ -44,7 +44,7 @@ public class NoticeController {
 	
 	@RequestMapping("/registForm")
 	public String registForm(){
-		String url = "notice/regist.open";
+		String url = "notice/registForm.open";
 		return url;
 	}
 	

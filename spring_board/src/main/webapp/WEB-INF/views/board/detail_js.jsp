@@ -5,10 +5,11 @@
 
 <script>
 window.onload=function(){
-	var formObj = $("form[role='form']");
-
+	
 	ShowReply();
 	
+	var formObj = $("form[role='form']");
+
 	$('button#modifyBtn').on('click',function(evnet){
 		//alert('modify btn click');
 		formObj.attr({
@@ -31,5 +32,7 @@ window.onload=function(){
 		window.opener.location.reload(true);
 		window.close();
 	});
+	
+	
 }
 </script>

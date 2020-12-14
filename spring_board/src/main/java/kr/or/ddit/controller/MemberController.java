@@ -6,11 +6,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.Resource;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -19,6 +20,11 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +38,8 @@ import kr.or.ddit.command.MemberModifyCommand;
 import kr.or.ddit.command.MemberRegistCommand;
 import kr.or.ddit.command.SearchCriteria;
 import kr.or.ddit.dto.MemberVO;
+import kr.or.ddit.security.CustomAuthenticationProvider;
+import kr.or.ddit.security.User;
 import kr.or.ddit.service.MemberService;
 import kr.or.ddit.utils.ExceptionLoggerHelper;
 
@@ -44,7 +52,7 @@ public class MemberController {
 
 	@RequestMapping("/main")
 	public String main() {
-		String url="member/main.open";
+		String url = "member/main.open";
 		return url;
 	}
 
@@ -126,9 +134,12 @@ public class MemberController {
 		return url;
 	}
 
+	@Autowired
+	private CustomAuthenticationProvider authProvider;
+
 	@RequestMapping(value = "/modify", method = RequestMethod.POST)
-	public void modify(MemberModifyCommand modifyReq, HttpSession session, HttpServletResponse response)
-			throws Exception {
+	public void modify(MemberModifyCommand modifyReq, Authentication auth, HttpSession session,
+			HttpServletResponse response) throws Exception {
 
 		MemberVO member = modifyReq.toParseMember();
 
@@ -141,9 +152,34 @@ public class MemberController {
 		memberService.modify(member);
 
 		// 로그인한 사용자의 경우 수정된 정보로 session 업로드
-		MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
-		if (loginUser != null && member.getId().equals(loginUser.getId())) {
-			session.setAttribute("loginUser", member);
+		/*
+		 * MemberVO loginUser = (MemberVO) session.getAttribute("loginUser"); if
+		 * (loginUser != null && member.getId().equals(loginUser.getId())) {
+		 * session.setAttribute("loginUser", member); }
+		 */
+
+		/*
+		 * 로그인 한 사용자의 권한을 동적으로 업데이트해야 할 경우 (물론 변경된 경우) 로그 아웃하고 로그인 할 필요없이 Spring
+		 * SecurityContextHolder의 Authentication 객체 (보안 토큰)를 재설정하면됩니다.
+		 */
+		if (auth.getName().equals(member.getId())) {
+			// 변경된 로그인 사용자 정보를 가져온다.
+			MemberVO updateMember = memberService.getMember(auth.getName());
+
+			// security의 userDetail을 갱신하기위한 User 생성.
+			User authUser = new User(updateMember);
+									
+			// 새로운 Authentication을 생성.
+			UsernamePasswordAuthenticationToken newAuth = 
+				new UsernamePasswordAuthenticationToken(authUser.getUsername(),authUser.getPassword(),
+														authUser.getAuthorities());
+			newAuth.setDetails(authUser);
+
+			// SecurityContextHolder으로 새로 생성한 authentication 을 setting
+			SecurityContextHolder.getContext().setAuthentication(newAuth);
+			
+			// authentication detail과 session attribute를 교체한다.
+			session.setAttribute("loginUser", authUser.getMemberVO());
 		}
 
 		response.setContentType("text/html;charset=utf-8");
@@ -196,7 +232,7 @@ public class MemberController {
 		if (imageFile.exists()) {
 			imageFile.delete();
 		}
-		
+
 		memberService.remove(id);
 
 		// 삭제되는 회원이 로그인 회원인경우 로그아웃 해야함.
@@ -209,26 +245,34 @@ public class MemberController {
 
 		return url;
 	}
-	
-	@RequestMapping(value="/stop",method=RequestMethod.GET)
-	public String stop(String id, HttpSession session,Model model)throws SQLException{
-		String url="member/stopSuccess";
-		
-		MemberVO loginUser = (MemberVO)session.getAttribute("loginUser");
-		if(id.equals(loginUser.getId())) {
-			 url="member/stopFail";
-		}else{
+
+	@RequestMapping(value = "/stop", method = RequestMethod.GET)
+	public String stop(String id, HttpSession session, Model model) throws SQLException {
+		String url = "member/stopSuccess";
+
+		MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+		if (id.equals(loginUser.getId())) {
+			url = "member/stopFail";
+		} else {
 			memberService.disabled(id);
-		}	
-		
+		}
+
 		model.addAttribute("id", id);
-		
+
 		return url;
 	}
-	
-	
-	
-	
+
+	@RequestMapping("/getMemberToJson")
+	public ResponseEntity<MemberVO> getMemberToJson(String id) throws SQLException {
+		ResponseEntity<MemberVO> entity = null;
+
+		MemberVO member = memberService.getMember(id);
+
+		entity = new ResponseEntity<MemberVO>(member, HttpStatus.OK);
+
+		return entity;
+	}
+
 	@RequestMapping("/getPicture")
 	@ResponseBody
 	public ResponseEntity<byte[]> getPicture(String picture) throws Exception {
@@ -278,5 +322,4 @@ public class MemberController {
 		return fileName;
 	}
 
-	
 }

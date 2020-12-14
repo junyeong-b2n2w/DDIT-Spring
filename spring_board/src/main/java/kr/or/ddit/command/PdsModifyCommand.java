@@ -2,10 +2,11 @@ package kr.or.ddit.command;
 
 import kr.or.ddit.dto.PdsVO;
 
-public class PdsModifyCommand extends PdsRegistCommand{
-
+public class PdsModifyCommand extends PdsRegistCommand {
+	
 	private int pno;
 	private int[] deleteFile;
+	
 	public int getPno() {
 		return pno;
 	}
@@ -20,9 +21,9 @@ public class PdsModifyCommand extends PdsRegistCommand{
 	}
 	
 	@Override
-	public PdsVO toPdsVO() {
+	public PdsVO toPdsVO(){
 		PdsVO pds = super.toPdsVO();
-		pds.setPno(this.pno);
+		pds.setPno(this.pno);	
 		
 		return pds;
 	}

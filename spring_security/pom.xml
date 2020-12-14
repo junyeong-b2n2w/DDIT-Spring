@@ -19,7 +19,7 @@
 	
 	<repositories>
 		<repository>
-			<id>oracle driver</id>
+			<id>oracle driver</id> 
 			<url>http://www.datanucleus.org/downloads/maven2/</url>
 		</repository>
 	</repositories>

@@ -1,5 +1,6 @@
 package kr.or.ddit.controller;
 
+import java.sql.SQLException;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import kr.or.ddit.command.SearchCriteria;
 import kr.or.ddit.dto.ReplyVO;
 import kr.or.ddit.service.ReplyService;
 
+
 //url : /replies
 ///replies/all/{bno}		list : GET방식, bno번 게시글의 댓글 목록
 ///replies/{rno}			modify : PUT,PATCH방식, rno 댓글의 수정 
@@ -25,98 +27,106 @@ import kr.or.ddit.service.ReplyService;
 //bno번 게시글의 페이징 처리된 댓글 목록
 
 @RestController
+@RequestMapping("/replies")
 public class FreeBoardReplyController {
-
+	
 	@Autowired
-
 	private ReplyService service;
-
-	@RequestMapping(value = "/{bno}/{page}", method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> replyList(@PathVariable("bno") int bno,
-			@PathVariable("page") int page) throws Exception {
-
+	
+	@RequestMapping(value="/{bno}/{page}", method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> replyList(@PathVariable("bno") int bno, 
+														 @PathVariable("page") int page)throws Exception{
 		ResponseEntity<Map<String, Object>> entity = null;
+		
 		SearchCriteria cri = new SearchCriteria();
 		cri.setPage(page);
-
+		
 		try {
 			Map<String, Object> dataMap = service.getReplyList(bno, cri);
-			entity = new ResponseEntity<Map<String, Object>>(dataMap, HttpStatus.OK);
-		} catch (Exception e) {
+			entity = new ResponseEntity<Map<String, Object>>(dataMap,HttpStatus.OK);
+		} catch (SQLException e) {
 			e.printStackTrace();
 			entity = new ResponseEntity<Map<String, Object>>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
+		
 		return entity;
-
+		
 	}
 	
-	@RequestMapping(value = "", method= RequestMethod.POST)
-	public ResponseEntity<String> register(@RequestBody ReplyVO reply) throws Exception{
-		
+	@RequestMapping(value = "", method = RequestMethod.POST)
+	public ResponseEntity<String> register(@RequestBody ReplyVO reply)	throws Exception {
 		ResponseEntity<String> entity = null;
-	
+
 		try {
 			service.registReply(reply);
-			
+
 			SearchCriteria cri = new SearchCriteria();
-			
-			Map<String, Object> dataMap = service.getReplyList(reply.getBno(), cri);
-			
+
+			Map<String, Object> dataMap = service.getReplyList(reply.getBno(),cri);
 			PageMaker pageMaker = (PageMaker) dataMap.get("pageMaker");
 			int realEndPage = pageMaker.getRealEndPage();
-			
-			entity = new ResponseEntity<String>(realEndPage+"", HttpStatus.OK);
-		}catch (Exception e) {
+
+			entity = new ResponseEntity<String>(realEndPage+"",HttpStatus.OK);
+		} catch (SQLException e) {
 			e.printStackTrace();
-			entity = new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+			entity = new ResponseEntity<String>(e.getMessage(),
+					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-	
+
 		return entity;
 	}
 	
-	@RequestMapping(value="/{rno}", method = { RequestMethod.PUT, RequestMethod.PATCH })
-	public ResponseEntity<String> modify(@PathVariable("rno") int rno, @RequestBody ReplyVO reply) throws Exception{
-
+	@RequestMapping(value = "/{rno}", method = { RequestMethod.PUT,RequestMethod.PATCH })
+	public ResponseEntity<String> modify(@PathVariable("rno") int rno,@RequestBody ReplyVO reply) 
+																						throws Exception {
 		ResponseEntity<String> entity = null;
 		reply.setRno(rno);
 		
 		try {
 			service.modifyReply(reply);
 			entity = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 			entity = new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		
+
 		return entity;
 	}
 	
-	@RequestMapping(value="/{bno}/{rno}/{page}", method =  RequestMethod.DELETE)
-	public ResponseEntity<String> delete(@PathVariable("rno") int rno,
+	@RequestMapping(value="/{bno}/{rno}/{page}",method=RequestMethod.DELETE)
+	public ResponseEntity<String> remove(@PathVariable("rno") int rno,
 										 @PathVariable("bno") int bno,
 										 @PathVariable("page") int page) throws Exception{
-		ResponseEntity<String> entity = null;
-		
-		try {
-			service.removeReply(rno);;
+		ResponseEntity<String> entity=null;
+		try{
+			service.removeReply(rno);
 			
-			SearchCriteria cri = new SearchCriteria();
-			
-			Map<String, Object> dataMap = service.getReplyList(bno, cri);
+			SearchCriteria cri= new SearchCriteria();
+						
+			Map<String,Object> dataMap=service.getReplyList(bno, cri);
 			PageMaker pageMaker = (PageMaker)dataMap.get("pageMaker");
 			
-			int realEndPage = pageMaker.getRealEndPage();
-			if(page > realEndPage) {page=realEndPage;}
+			int realEndPage=pageMaker.getRealEndPage();
+			if(page>realEndPage){page=realEndPage;}
 			
-			entity = new ResponseEntity<String>(""+page, HttpStatus.OK);
-		} catch (Exception e) {
+			
+			entity=new ResponseEntity<String>(""+page,HttpStatus.OK);
+		}catch(SQLException e){
 			e.printStackTrace();
-			entity = new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+			entity=new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		
 		
 		return entity;
 	}
-	
 }
+
+
+
+
+
+
+
+
+
+

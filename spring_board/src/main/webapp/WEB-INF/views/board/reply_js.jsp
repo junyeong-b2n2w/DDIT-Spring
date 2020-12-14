@@ -102,8 +102,8 @@ function ShowReply() {
 				"Content-Type":"application/json",
 				"X-HTTP-Method-Override":"PUT"
 			},
-			contentType:"application/json",
 			data:JSON.stringify({replytext:replytext}),
+			contentType:"application/json",
 			success:function(result){
 				alert("수정되었습니다.");			
 				getPage("<%=request.getContextPath()%>/replies/${board.bno}/"+replyPage);
@@ -120,12 +120,12 @@ function ShowReply() {
 		var rno=$('.modal-title').text();
 				
 		$.ajax({
-			url:"<%=request.getContextPath()%>/replies/${board.bno}/"+rno+"/"+replayPage,
+			url:"<%=request.getContextPath()%>/replies/${board.bno}/"+rno+"/"+replyPage,
 			type:"delete",
 			headers:{
 				"Content-Type":"application/json",
 				"X-HTTP-Override":"delete"
-			},
+			},			
 			dataType:'text',
 			success:function(page){
 				alert("삭제되었습니다.");

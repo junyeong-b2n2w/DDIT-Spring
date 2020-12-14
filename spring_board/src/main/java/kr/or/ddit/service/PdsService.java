@@ -11,8 +11,8 @@ public interface PdsService {
 		Map<String, Object> getList(SearchCriteria cri) throws SQLException;
 
 		// 글조회
-		PdsVO getPds(int pno) throws SQLException;
-
+		PdsVO getPdsForModify(int pno) throws SQLException;	
+		
 		// 글작성
 		void regist(PdsVO pds) throws SQLException;
 
@@ -23,5 +23,5 @@ public interface PdsService {
 		void remove(int pno) throws SQLException;
 
 		// 글읽기(조회수증가)
-		PdsVO read(int pno) throws SQLException;
+		PdsVO getPds(int pno) throws SQLException;
 }

@@ -7,11 +7,13 @@ import org.springframework.web.multipart.MultipartFile;
 import kr.or.ddit.dto.PdsVO;
 
 public class PdsRegistCommand {
-
+	
 	private String title;
 	private String content;
 	private String writer;
 	private List<MultipartFile> uploadFile;
+	
+	
 	public String getTitle() {
 		return title;
 	}
@@ -37,7 +39,7 @@ public class PdsRegistCommand {
 		this.uploadFile = uploadFile;
 	}
 	
-	public PdsVO toPdsVO() {
+	public PdsVO toPdsVO(){
 		PdsVO pds = new PdsVO();
 		pds.setContent(this.content);
 		pds.setTitle(this.title);
@@ -45,5 +47,12 @@ public class PdsRegistCommand {
 		
 		return pds;
 	}
-	
 }
+
+
+
+
+
+
+
+

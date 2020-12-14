@@ -48,7 +48,7 @@ public class PdsServiceImpl implements PdsService {
 		return dataMap;
 	}
 	@Override
-	public PdsVO getPds(int pno) throws SQLException {
+	public PdsVO getPdsForModify(int pno) throws SQLException {
 		PdsVO pds = pdsDAO.selectPdsByPno(pno);
 		List<AttachVO> attachList=attachDAO.selectAttachesByPno(pno);
 		pds.setAttachList(attachList);
@@ -81,7 +81,7 @@ public class PdsServiceImpl implements PdsService {
 		pdsDAO.deletePds(pno);		
 	}
 	@Override
-	public PdsVO read(int pno) throws SQLException {
+	public PdsVO getPds(int pno) throws SQLException {
 		PdsVO pds = pdsDAO.selectPdsByPno(pno);
 		List<AttachVO> attachList=attachDAO.selectAttachesByPno(pno);
 		pds.setAttachList(attachList);

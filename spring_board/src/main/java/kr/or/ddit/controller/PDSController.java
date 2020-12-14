@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +26,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-
 import kr.or.ddit.command.PdsModifyCommand;
 import kr.or.ddit.command.PdsRegistCommand;
 import kr.or.ddit.command.SearchCriteria;
@@ -42,230 +40,233 @@ public class PDSController {
 
 	@Autowired
 	private PdsService service;
-	
+
 	@Autowired
 	private AttachDAO attachDAO;
+
 	public void setAttachDAO(AttachDAO attachDAO) {
 		this.attachDAO = attachDAO;
 	}
-	
+
 	@Resource(name = "fileUploadPath")
 	private String fileUploadPath;
-	
+
 	@RequestMapping("/main")
-	public String main() throws Exception{
+	public String main() throws Exception {
 		return "pds/main.open";
 	}
-	
-	
+
 	@RequestMapping("/list")
-	public ModelAndView list(SearchCriteria cri, ModelAndView mnv)throws SQLException{
-		String url="pds/list.open";		
-		
-		Map<String,Object> dataMap = service.getList(cri);
-		
-		mnv.addAllObjects( dataMap);
+	public ModelAndView list(SearchCriteria cri, ModelAndView mnv) throws Exception {
+		String url = "pds/list.open";
+
+		Map<String, Object> dataMap = service.getList(cri);
+
+		mnv.addAllObjects(dataMap);
 		mnv.setViewName(url);
-		
+
 		return mnv;
 	}
-	
+
 	@RequestMapping("/registForm")
-	public String registForm()throws SQLException{
-		String url="pds/regist.open";		
-		
-		
-		return url;
+	public ModelAndView registForm(ModelAndView mnv) throws Exception {
+		String url = "pds/regist.open";
+		mnv.setViewName(url);
+		return mnv;
 	}
-	
-	
-	@RequestMapping("/regist")
-	public void regist(PdsRegistCommand registReq, HttpServletRequest request,HttpServletResponse response) throws Exception{
-		
+
+	@RequestMapping(value = "/regist", method = RequestMethod.POST, produces = "text/plain;charset=utf-8")
+	public void regist(PdsRegistCommand registReq, HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+
 		List<AttachVO> attachList = saveFile(registReq);
-		
+
 		PdsVO pds = registReq.toPdsVO();
 		pds.setAttachList(attachList);
-		
+
 		service.regist(pds);
-		
+
 		response.setContentType("text/html;charset=utf-8");
 		PrintWriter out = response.getWriter();
-		
 		out.println("<script>");
-		out.println("alert('정상적으로 등록되었습니다');");
+		out.println("alert('정상적으로 등록되었습니다.');");
 		out.println("window.opener.location.href='" + request.getContextPath() + "/pds/list';");
 		out.println("window.close();");
 		out.println("</script>");
-		
+
 		out.close();
+
 	}
-	
-	private List<AttachVO> saveFile(PdsRegistCommand registReq) throws Exception{
+
+	private List<AttachVO> saveFile(PdsRegistCommand registReq) throws Exception {
 		String fileUploadPath = this.fileUploadPath;
-		
+
 		List<AttachVO> attachList = new ArrayList<AttachVO>();
-		
-		if(registReq.getUploadFile() != null) {
-			for(MultipartFile multi : registReq.getUploadFile()) {
+
+		if (registReq.getUploadFile() != null) {
+			for (MultipartFile multi : registReq.getUploadFile()) {
 				String fileName = UUID.randomUUID().toString().replace("-", "") + "$$" + multi.getOriginalFilename();
-				
-				File target = new File(fileUploadPath,fileName);
-				
-				if(!target.exists()) {
+				File target = new File(fileUploadPath, fileName);
+
+				if (!target.exists()) {
 					target.mkdirs();
 				}
-				
+
 				multi.transferTo(target);
-				
+
 				AttachVO attach = new AttachVO();
 				attach.setUploadPath(fileUploadPath);
 				attach.setFileName(fileName);
-				attach.setFileType(fileName.substring(fileName.lastIndexOf('.')+1).toUpperCase());
-				
+				attach.setFileType(fileName.substring(fileName.lastIndexOf('.') + 1).toUpperCase());
+
 				attachList.add(attach);
 			}
 		}
 		return attachList;
 	}
-	
-	
+
 	@RequestMapping("/detail")
-	public ModelAndView detail(int pno, ModelAndView mnv) throws Exception{
-		String url ="pds/detail.open";
-		
-		PdsVO pds = service.getPds(pno);
-		
+	public ModelAndView detail(ModelAndView mnv, int pno, String from) throws Exception {
+		String url = "pds/detail.open";
+
+		PdsVO pds = null;
+		if (from != null && from.equals("modify")) {
+			pds = service.getPdsForModify(pno);
+		} else {
+			pds = service.getPds(pno);
+		}
+
+		// 파일명 재정의
 		List<AttachVO> attachList = pds.getAttachList();
-		if(attachList!=null) {
-			for(AttachVO attach : attachList) {
+		if (attachList != null) {
+			for (AttachVO attach : attachList) {
 				String fileName = attach.getFileName().split("\\$\\$")[1];
 				attach.setFileName(fileName);
 			}
 		}
-		
-		mnv.addObject("pds",pds);
+
+		mnv.addObject("pds", pds);
 		mnv.setViewName(url);
-		
+
 		return mnv;
-		
 	}
-	
+
 	@RequestMapping("/modifyForm")
-	public ModelAndView modifyForm(int pno, ModelAndView mnv) throws Exception{
-		String url ="pds/modify.open";
-		
-		PdsVO pds = service.read(pno);
-		
+	public ModelAndView modifyForm(ModelAndView mnv, int pno) throws Exception {
+		String url = "pds/modify.open";
+
+		PdsVO pds = service.getPdsForModify(pno);
+
+		// 파일명 재정의
 		List<AttachVO> attachList = pds.getAttachList();
-		if(attachList!=null) {
-			for(AttachVO attach : attachList) {
+		if (attachList != null) {
+			for (AttachVO attach : attachList) {
 				String fileName = attach.getFileName().split("\\$\\$")[1];
 				attach.setFileName(fileName);
 			}
 		}
-		
-		mnv.addObject("pds",pds);
+
+		mnv.addObject("pds", pds);
 		mnv.setViewName(url);
-		
+
 		return mnv;
-		
 	}
-	
-	
-	@RequestMapping(value="modify", method=RequestMethod.POST)
-	public void modifyPOST(PdsModifyCommand modifyReq, HttpServletResponse response) throws Exception{
-		
+
+	@RequestMapping(value = "modify", method = RequestMethod.POST)
+	public void modifyPOST(PdsModifyCommand modifyReq, HttpServletResponse response) throws Exception {
 		String fileUploadPath = this.fileUploadPath;
-		
-		if(modifyReq.getDeleteFile()!=null && modifyReq.getDeleteFile().length > 0) {
-			for( int ano : modifyReq.getDeleteFile()) {
+
+		// 삭제된 파일 삭제
+		if (modifyReq.getDeleteFile() != null && modifyReq.getDeleteFile().length > 0) {
+			for (int ano : modifyReq.getDeleteFile()) {
 				String fileName = attachDAO.selectAttachByAno(ano).getFileName();
 				File deleteFile = new File(fileUploadPath, fileName);
-				attachDAO.deleteAllAttach(ano);
-				if(deleteFile.exists()) {
+				attachDAO.deleteAttach(ano); // DB 삭제
+				if (deleteFile.exists()) {
 					deleteFile.delete();
 				}
 			}
 		}
-		
-		List <AttachVO> attachList = saveFile(modifyReq);
-		
+
+		// 추가 혹은 변경된 파일 저장
+		List<AttachVO> attachList = saveFile(modifyReq);
+
+		// PdsVO settting
 		PdsVO pds = modifyReq.toPdsVO();
 		pds.setAttachList(attachList);
-		
-		
+
+		// DB에 해당 데이터 추가
 		service.modify(pds);
-		
-		
+
 		response.setContentType("text/html;charset=utf-8");
 		PrintWriter out = response.getWriter();
-		
 		out.println("<script>");
-		out.println("alert('수정되었습니다');");
+		out.println("alert('수정되었습니다.');");
 		out.println("location.href='detail?pno=" + pds.getPno() + "&from=modify';");
 		out.println("</script>");
-		
+
 		out.close();
+
 	}
-	
+
 	@RequestMapping("/remove")
-	public void remove(int pno , HttpServletResponse response) throws Exception{
-		
-		List<AttachVO> attachList = attachDAO.selectAttachesByPno(pno);
-		
-		if(attachList != null) {
+	public void remove(int pno, HttpServletResponse response) throws Exception {
+
+		//첨부파일 삭제
+		List<AttachVO> attachList = attachDAO.selectAttachesByPno(pno);		
+		if (attachList != null) {
 			for (AttachVO attach : attachList) {
 				File target = new File(attach.getUploadPath(), attach.getFileName());
-				if(target.exists()) {
+				if (target.exists()) {
 					target.delete();
 				}
 			}
 		}
 		
+		//DB삭제
 		service.remove(pno);
-		
-		
+
 		response.setContentType("text/html;charset=utf-8");
 		PrintWriter out = response.getWriter();
-		
 		out.println("<script>");
-		out.println("alert('삭제되었습니다');");
+		out.println("alert('삭제되었습니다.');");
 		out.println("window.close();");
 		out.println("window.opener.location.reload(true);");
 		out.println("</script>");
-		
 		out.close();
+
 	}
 	
 	@RequestMapping("/getFile")
-	public ResponseEntity<byte[]> getFile(int ano) throws Exception{
+	public ResponseEntity<byte[]> getFile(int ano) throws Exception {
 		InputStream in = null;
-		ResponseEntity<Byte[]> entity = null;
-		
+		ResponseEntity<byte[]> entity = null;
+
 		AttachVO attach = attachDAO.selectAttachByAno(ano);
-		
+
 		String fileUploadPath = this.fileUploadPath;
-		String fileName  = attach.getFileName();
-		
+		String fileName = attach.getFileName();
+
 		try {
-			in = new FileInputStream(fileUploadPath+ File.separator + fileName);
+			in = new FileInputStream(fileUploadPath +File.separator+ fileName);
+
 			fileName = fileName.substring(fileName.indexOf("$$") + 2);
-			
+
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-			headers.add("Content-Disposition", "attachment;filename=\"" + new String(fileName.getBytes("utf-8"), "ISO-8859-1")+ "\"");
-			
-			entity = new ResponseEntity<Byte[]>(IOUtils.toByteArray(in), headers, HttpStatus.CREATED);
+			headers.add("Content-Disposition",
+					"attachment;filename=\"" + new String(fileName.getBytes("utf-8"), "ISO-8859-1") + "\"");
+
+			entity = new ResponseEntity<byte[]>(IOUtils.toByteArray(in), headers, HttpStatus.CREATED);
+
 		} catch (IOException e) {
 			e.printStackTrace();
-			entity = new ResponseEntity<Byte[]>(HttpStatus.INTERNAL_SERVER_ERROR);
+			entity = new ResponseEntity<byte[]>(HttpStatus.INTERNAL_SERVER_ERROR);
 		} finally {
 			in.close();
 		}
 		
 		return entity;
 	}
-	
-	
+
 }
