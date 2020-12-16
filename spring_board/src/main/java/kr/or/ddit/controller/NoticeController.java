@@ -4,6 +4,7 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,14 +45,16 @@ public class NoticeController {
 	
 	@RequestMapping("/registForm")
 	public String registForm(){
-		String url = "notice/registForm.open";
+		String url = "notice/regist.open";
 		return url;
 	}
 	
 	@RequestMapping("/regist")
-	public void regist(NoticeVO board,HttpServletResponse response)throws Exception{
+	public void regist(NoticeVO notice,HttpServletRequest request, HttpServletResponse response)throws Exception{
 		
-		noticeService.write(board);
+		notice.setTitle((String)request.getAttribute("XSStitle"));
+		
+		noticeService.write(notice);
 		
 		response.setContentType("text/html;charset=utf-8");
 		PrintWriter out=response.getWriter();
@@ -96,7 +99,9 @@ public class NoticeController {
 	}
 	
 	@RequestMapping(value="/modify",method=RequestMethod.POST)
-	public void modifyPost(NoticeVO notice,HttpServletResponse response)throws Exception{
+	public void modifyPost(NoticeVO notice,HttpServletRequest request,HttpServletResponse response)throws Exception{
+
+		notice.setTitle((String)request.getAttribute("XSStitle"));
 		
 		noticeService.modify(notice);
 		

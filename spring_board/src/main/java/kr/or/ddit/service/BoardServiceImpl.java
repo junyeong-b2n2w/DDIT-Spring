@@ -33,6 +33,12 @@ public class BoardServiceImpl implements BoardService{
 		boardDAO.increaseViewCnt(bno);
 		return board;
 	}
+	
+	@Override
+	public BoardVO findBoard(String fileName) throws SQLException {
+		BoardVO board = boardDAO.selectBoardByContent(fileName);
+		return board;
+	}
 
 	@Override
 	public void write(BoardVO board) throws SQLException {
@@ -80,4 +86,6 @@ public class BoardServiceImpl implements BoardService{
 		
 		return dataMap;
 	}
+
+	
 }

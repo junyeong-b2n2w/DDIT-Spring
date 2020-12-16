@@ -1,6 +1,11 @@
 package kr.or.ddit.security;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -27,6 +32,8 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 		session.setAttribute("loginUser", loginUser);
 		//session.setMaxInactiveInterval(10);
 		
+		logFile(loginUser,request);
+		
 		// cookie 발행
 		String rememberMe = request.getParameter("rememberMe");
 		String id = request.getParameter("id");
@@ -41,5 +48,37 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 		super.onAuthenticationSuccess(request, response, authentication);
 
 	}
+	
+	private void logFile(MemberVO loginUser,HttpServletRequest request)
+															throws IOException{
+		//로그인 정보를 스트링으로 저장.
+		String tag ="[login:user]";
+		String log =tag
+					+loginUser.getId()+","					
+					+loginUser.getPhone()+","
+					+loginUser.getEmail()+","
+					+request.getRemoteAddr()+","
+					+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+		
+		//로그 파일 생성.
+		String savePath="d:\\log";
+		File file=new File(savePath);
+		if(!file.exists()){
+			file.mkdirs();
+		}
+		String logFilePath=savePath+File.separator+"login_user_log.txt";		
+		BufferedWriter out=
+				new BufferedWriter(new FileWriter(logFilePath,true));
+		
+		//로그를 기록
+		out.write(log);
+		out.newLine();
+		
+	}
 
 }
+
+
+
+
+

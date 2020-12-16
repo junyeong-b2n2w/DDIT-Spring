@@ -13,6 +13,9 @@ public interface NoticeService {
 
 	// 상세보기
 	NoticeVO getNotice(int nno) throws SQLException;
+	
+	// file 찾기
+	NoticeVO findNotice(String fileName) throws SQLException;
 
 	NoticeVO getNoticeModify(int nno) throws SQLException;
 

@@ -9,6 +9,14 @@
 		from notice
 		where nno=#{nno}
 	</select>
+	<select id="selectNoticeByContent" parameterType="str" resultType="notice">
+		select 
+		* 
+		from notice
+		where content like '%'||#{fileName}||'%'
+		
+	</select>
+	
 	
 	<sql id="search">
 		<if test="searchType == 't'.toString()">

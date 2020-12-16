@@ -39,6 +39,11 @@ public class PdsDAOImpl implements PdsDAO {
 		PdsVO pds=sqlSession.selectOne("Pds-Mapper.selectPdsByPno",pno);
 		return pds;
 	}
+	@Override
+	public PdsVO selectPdsByContent(String fileName) throws SQLException {
+		PdsVO pds=sqlSession.selectOne("Pds-Mapper.selectPdsByContent",fileName);
+		return pds;
+	}
 
 	@Override
 	public void insertPds(PdsVO pds) throws SQLException {
@@ -65,5 +70,7 @@ public class PdsDAOImpl implements PdsDAO {
 		int pno=sqlSession.selectOne("Pds-Mapper.selectPdsSeqNext");
 		return pno;
 	}
+
+	
 
 }

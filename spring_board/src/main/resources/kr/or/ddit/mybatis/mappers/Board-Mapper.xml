@@ -72,6 +72,11 @@
 		from board 
 		where bno=#{bno}
 	</select>
+		<select id="selectBoardByContent"  resultType="board">
+		select * 
+		from board 
+		where content like '%'||#{fileName}||'%'		
+	</select>
 	
 	<update id="insertBoard" parameterType="board">
 		insert 

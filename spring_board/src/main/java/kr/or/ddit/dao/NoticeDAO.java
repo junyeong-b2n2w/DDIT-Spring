@@ -13,6 +13,7 @@ public interface NoticeDAO {
 	int selectSearchNoticeListCount(SearchCriteria cri) throws SQLException;
 
 	NoticeVO selectNoticeByNno(int nno) throws SQLException;
+	NoticeVO selectNoticeByContent(String fileName) throws SQLException;
 
 	void insertNotice(NoticeVO Notice) throws SQLException;
 

@@ -21,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
@@ -76,14 +77,15 @@ public class PDSController {
 	}
 
 	@RequestMapping(value = "/regist", method = RequestMethod.POST, produces = "text/plain;charset=utf-8")
-	public void regist(PdsRegistCommand registReq, HttpServletRequest request, HttpServletResponse response)
+	public void regist(PdsRegistCommand registReq,Model model, 
+					   HttpServletRequest request,HttpServletResponse response)
 			throws Exception {
 
-		List<AttachVO> attachList = saveFile(registReq);
-
+		List<AttachVO> attachList = saveFile(registReq);	
+		
 		PdsVO pds = registReq.toPdsVO();
 		pds.setAttachList(attachList);
-
+		pds.setTitle((String)request.getAttribute("XSStitle"));
 		service.regist(pds);
 
 		response.setContentType("text/html;charset=utf-8");
@@ -95,6 +97,8 @@ public class PDSController {
 		out.println("</script>");
 
 		out.close();
+		
+		model.addAttribute("attachList",attachList);
 
 	}
 
@@ -173,7 +177,8 @@ public class PDSController {
 	}
 
 	@RequestMapping(value = "modify", method = RequestMethod.POST)
-	public void modifyPOST(PdsModifyCommand modifyReq, HttpServletResponse response) throws Exception {
+	public void modifyPOST(PdsModifyCommand modifyReq, Model model, 
+						   HttpServletRequest request,HttpServletResponse response) throws Exception {
 		String fileUploadPath = this.fileUploadPath;
 
 		// 삭제된 파일 삭제
@@ -194,6 +199,7 @@ public class PDSController {
 		// PdsVO settting
 		PdsVO pds = modifyReq.toPdsVO();
 		pds.setAttachList(attachList);
+		pds.setTitle((String)request.getAttribute("XSStitle"));
 
 		// DB에 해당 데이터 추가
 		service.modify(pds);
@@ -206,6 +212,8 @@ public class PDSController {
 		out.println("</script>");
 
 		out.close();
+		
+		model.addAttribute("attachList",attachList);
 
 	}
 

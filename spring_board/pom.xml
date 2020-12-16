@@ -18,7 +18,7 @@
 		<java-version>1.8</java-version>
 		<org.springframework-version>4.3.2.RELEASE</org.springframework-version>
 		<org.springframework-security>3.2.10.RELEASE</org.springframework-security>
-		
+
 		<oracle-ojdbc6.version>11.2.0.3</oracle-ojdbc6.version>
 		<commons-dbcp2.version>2.5.0</commons-dbcp2.version>
 		<org-mybatis.version>3.5.3</org-mybatis.version>
@@ -27,8 +27,8 @@
 		<jackson-databind.version>2.9.8</jackson-databind.version>
 		<commons-fileupload.version>1.3.1</commons-fileupload.version>
 		<org.apache.tiles-version>3.0.8</org.apache.tiles-version>
-		<org.aspectj.aspectjweaver-version>1.9.5</org.aspectj.aspectjweaver-version>
-		
+		<org.aspectjweaver-version>1.9.5</org.aspectjweaver-version>
+
 		<org.aspectj-version>1.6.10</org.aspectj-version>
 		<org.slf4j-version>1.6.6</org.slf4j-version>
 	</properties>
@@ -62,7 +62,7 @@
 			<version>${org.springframework-version}</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<!-- spring-security -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
@@ -78,7 +78,7 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-taglibs</artifactId>
 			<version>${org.springframework-security}</version>
-			<exclusions>				
+			<exclusions>
 				<exclusion>
 					<groupId>org.springframework</groupId>
 					<artifactId>spring-jdbc</artifactId>
@@ -89,8 +89,8 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
-		
+
+
 		<!-- ojdbc6 -->
 		<dependency>
 			<groupId>oracle</groupId>
@@ -136,8 +136,8 @@
 			<artifactId>commons-fileupload</artifactId>
 			<version>${commons-fileupload.version}</version>
 		</dependency>
-		
-		<!-- tiles -->		
+
+		<!-- tiles -->
 		<dependency>
 			<groupId>org.apache.tiles</groupId>
 			<artifactId>tiles-extras</artifactId>
@@ -153,6 +153,13 @@
 			<artifactId>tiles-jsp</artifactId>
 			<version>${org.apache.tiles-version}</version>
 		</dependency>
+		<!-- aspectjweaver -->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>${org.aspectjweaver-version}</version>
+			<scope>runtime</scope>
+		</dependency>
 
 		<!-- AspectJ -->
 		<dependency>
@@ -160,13 +167,7 @@
 			<artifactId>aspectjrt</artifactId>
 			<version>${org.aspectj-version}</version>
 		</dependency>
-		<!-- Aspectjweaver -->
-		<dependency>
-		    <groupId>org.aspectj</groupId>
-		    <artifactId>aspectjweaver</artifactId>
-		    <version>${org.aspectj.aspectjweaver-version}</version>
-		    <scope>runtime</scope>
-		</dependency>
+
 
 
 		<!-- log4jdbc-remix -->

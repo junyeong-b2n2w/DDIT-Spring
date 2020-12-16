@@ -31,7 +31,7 @@ public class LoginUserLogInterceptor extends HandlerInterceptorAdapter {
 		if(loginUser==null) return;
 		
 		//로그인 정보를 스트링으로 저장.
-		String tag = "[login:user]";
+		String tag = "[login:user],";
 		String log = tag
 				+ loginUser.getId() + ","
 				+ loginUser.getPhone() + ","

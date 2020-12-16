@@ -61,7 +61,7 @@
 		  class="kr.or.ddit.service.MemberServiceImpl"
 		  p:memberDAO-ref="memberDAO"
 		  />
-	<bean id="boardSevice"
+	<bean id="boardService"
 	      class="kr.or.ddit.service.BoardServiceImpl"
 	      p:boardDAO-ref="boardDAO"
 	      p:replyDAO-ref="replyDAO"
@@ -71,7 +71,7 @@
 	      p:pdsDAO-ref="pdsDAO"
 	      p:attachDAO-ref="attachDAO"
 	      />	
-	<bean id="noticeServcie"
+	<bean id="noticeService"
 		  class="kr.or.ddit.service.NoticeServiceImpl"
 		  p:noticeDAO-ref="noticeDAO"
 		  />

@@ -24,4 +24,15 @@ public interface PdsService {
 
 		// 글읽기(조회수증가)
 		PdsVO getPds(int pno) throws SQLException;
+		
+		// file 찾기
+		PdsVO findPds(String fileName) throws SQLException;
 }
+
+
+
+
+
+
+
+

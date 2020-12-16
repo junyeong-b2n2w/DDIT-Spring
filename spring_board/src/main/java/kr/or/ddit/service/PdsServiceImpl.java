@@ -91,5 +91,17 @@ public class PdsServiceImpl implements PdsService {
 		return pds;
 	}
 	
+	@Override
+	public PdsVO findPds(String fileName) throws SQLException {
+		PdsVO pds = pdsDAO.selectPdsByContent(fileName);		
+		return pds;
+	}
+	
 	
 }
+
+
+
+
+
+
